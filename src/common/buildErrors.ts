@@ -1,0 +1,3 @@
+// function buildErrorResponse<T>(): ErrorResponse {
+
+// }

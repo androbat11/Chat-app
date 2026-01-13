@@ -1,0 +1,38 @@
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_CONNECTION=mongodb://mongo:27017/chatdb
+      - DATABASE_NAME=chatdb
+    depends_on:
+      - mongo
+    networks:
+      - chat-network
+    restart: unless-stopped
+
+  # MongoDB database
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=chatdb
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - chat-network
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  chat-network:
+    driver: bridge
